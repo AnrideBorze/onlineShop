@@ -13,36 +13,26 @@ public class Starter {
     private static final String URLUsers = "jdbc:sqlite:users.db";
     private static final String URLProduct = "jdbc:sqlite:product.db";
 
-    private static final String CREATE_TABLE_USERS = """
-               CREATE TABLE Users(
-               ID INT PRIMARY KEY     NOT NULL,
-               NAME           TEXT    NOT NULL,
-               PASSWORD        CHAR(50) NOT NULL,
-               SOLE         REAL NOT NULL
-            )
-                    """;
+
+
+
 
     private static final String CREATE_TABLE_PRODUCTS = """
                CREATE TABLE Users(
-               ID INT PRIMARY KEY     NOT NULL,
-               NAME           TEXT    NOT NULL,
-               PRICE        CHAR(50) NOT NULL,
-               CREATION_DATA         REAL NOT NULL
+               id INT PRIMARY KEY       NOT NULL,
+               name                     VARCHAR(255)    NOT NULL,
+               price                    NUMERIC(50) NOT NULL,
+               creation_data            DATE NOT NULL
             )
                     """;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         //createNewDatabase();
+        //createNewTable();
     }
-git stat
-    public static void createNewTable() throws SQLException {
-        try (Connection conn = DriverManager.getConnection(URLUsers)){
-            Statement statement = conn.createStatement();
-            statement.execute(CREATE_TABLE_USERS);
-        }
 
 
-    }
+
 
 
     public static void createNewDatabase() throws SQLException {
@@ -54,6 +44,6 @@ git stat
                 System.out.println("The driver name is " + meta.getDriverName());
                 System.out.println("A new database has been created.");
             }
+        }
     }
-}
 }
