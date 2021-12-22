@@ -1,6 +1,5 @@
 package com.sarakhman.JDBS;
 
-import com.sarakhman.Entity.Product;
 import com.sarakhman.Entity.User;
 
 import java.sql.*;
@@ -26,7 +25,7 @@ public class JDBSUserDao {
                 "admin", "qwerty");
     }
 
-    public List<User> showAll() throws SQLException {
+    public List<User> getAll() {
         if (!tableExist()) {
             createNewTable();
         }
@@ -47,37 +46,49 @@ public class JDBSUserDao {
 
             return allUsers;
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Exception with getAll");
         }
-
+        return new ArrayList<>();
     }
 
-    public void addUser(User user) throws SQLException {
+    public void addUser(User user) {
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(ADD_USER)) {
-            preparedStatement.setString(1, "name");
-            preparedStatement.setString(2, "email");
-            preparedStatement.setString(3, "pass");
-            preparedStatement.setString(4, "salt");
+            preparedStatement.setString(1, user.getName());
+            preparedStatement.setString(2, user.getEmail());
+            preparedStatement.setString(3, user.getPassword());
+            preparedStatement.setString(4, user.getSalt());
             preparedStatement.executeUpdate();
 
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Exception with addUser");
         }
     }
 
-    private void createNewTable() throws SQLException {
+    private void createNewTable() {
         try (Connection connection = getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_TABLE_USERS);
             preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Exception with createNewTable");
         }
     }
 
-    private boolean tableExist() throws SQLException {
+    private boolean tableExist() {
         try (Connection connection = getConnection()) {
             DatabaseMetaData databaseMetaData = connection.getMetaData();
             ResultSet resultSet = databaseMetaData.getTables(null, null, "users", null);
             if (resultSet.next()) {
                 return true;
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Exception with tableExist");
         }
         return false;
 
